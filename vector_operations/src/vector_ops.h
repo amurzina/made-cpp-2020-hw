@@ -89,36 +89,35 @@ namespace task {
     }
 
     bool operator&&(std::vector<double> first, std::vector<double> second) {
-        return (first * second > 0) && (first || second);
+        return (first * second > 0) && (first || second);  // have collinearity and one direction
     }
 
-    std::istream &operator>>(std::istream &in, std::vector<double> number) {
-        size_t n = 0;
-        double num;
+    std::istream &operator>>(std::istream &in, std::vector<double> &number) {
+        size_t size = 0;
+        number.clear();
 
-        in >> n;
-        number.resize(n);
+        in >> size;
+        number.resize(size);
 
-        for (size_t i = 0; i < n; i++) {
-            in >> num;
-            number[i] = num;
+        for (size_t i = 0; i < size; i++) {
+            in >> number[i];
         }
 
         return in;
     }
 
-    std::ostream &operator<<(std::ostream &out, std::vector<double> number) {
+    std::ostream &operator<<(std::ostream &out, const std::vector<double> &number) {
         size_t size = number.size();
 
         for (size_t i = 0; i < size; i++) {
-            out << number[i] << " ";
+            out << number[i] << ' ';
         }
-        out << std::endl;
+        out << '\n';
 
         return out;
     }
 
-    void reverse(std::vector<double> number) { // http://www.cplusplus.com/reference/algorithm/reverse/
+    void reverse(std::vector<double> &number) { // http://www.cplusplus.com/reference/algorithm/reverse/
         auto first = number.begin();
         auto last = number.end();
 
