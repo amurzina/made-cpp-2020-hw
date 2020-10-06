@@ -77,14 +77,19 @@ namespace task {
 
     bool operator||(std::vector<double> first, std::vector<double> second) {
         double d1 = 0., d2 = 0.;
+
         for (size_t i = 0; i < first.size(); ++i) {
             d1 += first[i] * first[i];
             d2 += second[i] * second[i];
         }
+
         d1 = sqrt(d1);
         d2 = sqrt(d2);
-        if ((1. - (first * second) / (d1 * d2) < EPSILON) || (1. + (first * second) / (d1 * d2) < EPSILON))
-            return true;
+
+        if ((1. - (first * second) / (d1 * d2) < EPSILON) ||
+            (1. + (first * second) / (d1 * d2) < EPSILON)) {
+                return true;
+        }
         return false;
     }
 
