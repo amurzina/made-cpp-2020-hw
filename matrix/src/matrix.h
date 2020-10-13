@@ -6,64 +6,97 @@
 
 namespace task {
 
-const double EPS = 1e-6;
+    const double EPS = 1e-6;
 
 
-class OutOfBoundsException : public std::exception {};
-class SizeMismatchException : public std::exception {};
+    class OutOfBoundsException : public std::exception {
+    };
+
+    class SizeMismatchException : public std::exception {
+    };
 
 
-class Matrix {
+    class Matrix {
+        double **matrix;
+        size_t rows;
+        size_t columns;
 
-public:
+        void allocate_memory();
 
-    Matrix();
-    Matrix(size_t rows, size_t cols);
-    Matrix(const Matrix& copy);
-    Matrix& operator=(const Matrix& a);
+        void check_bounds(size_t, size_t) const;
 
-    double& get(size_t row, size_t col);
-    const double& get(size_t row, size_t col) const;
-    void set(size_t row, size_t col, const double& value);
-    void resize(size_t new_rows, size_t new_cols);
+        void check_size(size_t, size_t) const;
 
-    /* ??? */ operator[](size_t row);
-    /* ??? */ operator[](size_t row) const;
+    public:
 
-    Matrix& operator+=(const Matrix& a);
-    Matrix& operator-=(const Matrix& a);
-    Matrix& operator*=(const Matrix& a);
-    Matrix& operator*=(const double& number);
+        Matrix();
 
-    Matrix operator+(const Matrix& a) const;
-    Matrix operator-(const Matrix& a) const;
-    Matrix operator*(const Matrix& a) const;
-    Matrix operator*(const double& a) const;
+        Matrix(size_t rows, size_t cols);
 
-    Matrix operator-() const;
-    Matrix operator+() const;
+        Matrix(const Matrix &copy);
 
-    double det() const;
-    void transpose();
-    Matrix transposed() const;
-    double trace() const;
+        Matrix &operator=(const Matrix &a);
 
-    std::vector<double> getRow(size_t row);
-    std::vector<double> getColumn(size_t column);
+        double &get(size_t row, size_t col);
 
-    bool operator==(const Matrix& a) const;
-    bool operator!=(const Matrix& a) const;
+        const double &get(size_t row, size_t col) const;
 
-    // Your code goes here...
+        void set(size_t row, size_t col, const double &value);
 
-};
+        void resize(size_t new_rows, size_t new_cols);
 
+        double *operator[](size_t row);
 
-Matrix operator*(const double& a, const Matrix& b);
+        double const *operator[](size_t row) const;
 
-std::ostream& operator<<(std::ostream& output, const Matrix& matrix);
-std::istream& operator>>(std::istream& input, Matrix& matrix);
+        Matrix &operator+=(const Matrix &a);
 
+        Matrix &operator-=(const Matrix &a);
+
+        Matrix &operator*=(const Matrix &a);
+
+        Matrix &operator*=(const double &number);
+
+        Matrix operator+(const Matrix &a) const;
+
+        Matrix operator-(const Matrix &a) const;
+
+        Matrix operator*(const Matrix &a) const;
+
+        Matrix operator*(const double &a) const;
+
+        Matrix operator-() const;
+
+        Matrix operator+() const;
+
+        double det() const;
+
+        void transpose();
+
+        Matrix transposed() const;
+
+        double trace() const;
+
+        std::vector<double> getRow(size_t row);
+
+        std::vector<double> getColumn(size_t column);
+
+        bool operator==(const Matrix &a) const;
+
+        bool operator!=(const Matrix &a) const;
+
+        size_t getRowsNum() const;
+
+        size_t getColumnsNum() const;
+
+        ~Matrix();
+    };
+
+    Matrix operator*(const double &a, const Matrix &b);
+
+    std::ostream &operator<<(std::ostream &output, const Matrix &matrix);
+
+    std::istream &operator>>(std::istream &input, Matrix &matrix);
 
 
 }  // namespace task
