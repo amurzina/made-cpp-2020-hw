@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <vector>
+#include <numeric>
 #include <iostream>
 #include <algorithm>
 
@@ -45,10 +46,10 @@ namespace task {
 
     std::vector<double> operator-(const std::vector<double> &number) {
         size_t size = number.size();
-        std::vector<double> result;
+        std::vector<double> result(size);
 
         for (size_t i = 0; i < size; i++) {
-            result.push_back(-number[i]);
+            result[i] = -number[i];
         }
 
         return result;
@@ -86,14 +87,27 @@ namespace task {
         d1 = sqrt(d1);
         d2 = sqrt(d2);
 
-        if ((1. - (first * second) / (d1 * d2) < EPSILON) ||
-            (1. + (first * second) / (d1 * d2) < EPSILON)) {
-                return true;
+        if (d1 == 0 or d2 == 0) { // if one of a vector is zero vector -- it has collinearity to another
+            return true;
+        } else if ((1. - (first * second) / (d1 * d2) < EPSILON) ||
+                   (1. + (first * second) / (d1 * d2) < EPSILON)) {
+            return true;
         }
+
         return false;
     }
 
     bool operator&&(std::vector<double> first, std::vector<double> second) {
+
+
+        // if one of the vector is a zero vector it's co-directional to another one
+        double sum_first = std::accumulate(first.begin(), first.end(), decltype(first)::value_type(0));
+        double sum_second = std::accumulate(second.begin(), second.end(), decltype(second)::value_type(0));
+
+        if (sum_first == 0 || sum_second == 0) {
+            return true;
+        }
+
         return (first * second > 0) && (first || second);  // have collinearity and one direction
     }
 
