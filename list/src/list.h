@@ -599,11 +599,11 @@ namespace task {
         const_iterator c_iter = first;
 
         while (c_iter != last) {
-            c_iter = erase(c_it);
+            c_iter = erase(c_iter);
         }
 
         iterator iter;
-        iter.node = const_cast<Node *>(c_it.node);
+        iter.node = const_cast<Node *>(c_iter.node);
         return iter;
     }
 
@@ -852,10 +852,10 @@ namespace task {
         Node *left_node = first;
         Node *right_node = nullptr;
 
-        for (size_type i(0); i < listSize; ++i) {
+        for (size_t i(0); i < listSize; ++i) {
             right_node = left_node->next;
 
-            for (size_type j(i); j < listSize; ++j) {
+            for (size_t j(i); j < listSize; ++j) {
                 if (left_node->data == right_node->data) {
                     left_node->next = right_node->next;
 
