@@ -852,10 +852,10 @@ namespace task {
         Node *left_node = first;
         Node *right_node = nullptr;
 
-        for (size_t i(0); i < listSize; ++i) {
+        for (size_t i(0); i < length; ++i) {
             right_node = left_node->next;
 
-            for (size_t j(i); j < listSize; ++j) {
+            for (size_t j(i); j < length; ++j) {
                 if (left_node->data == right_node->data) {
                     left_node->next = right_node->next;
 
@@ -898,6 +898,5 @@ namespace task {
             left_node = left_node->next;
         }
     }
-}
 
 }  // namespace task
