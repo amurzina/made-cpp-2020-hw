@@ -1,8 +1,5 @@
 #pragma once
 
-#include <iterator>
-#include <list>
-
 #include <vector>
 #include <algorithm>
 
