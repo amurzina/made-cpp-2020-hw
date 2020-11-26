@@ -27,25 +27,28 @@ struct Batch {
 
 template<class T>
 class Allocator {
-    Batch<T> *last;
-    size_t counter;
 
 public:
     typedef T value_type;
-    typedef T* pointer;
+    typedef T *pointer;
     typedef const pointer const_pointer;
-    typedef T& reference;
-    typedef const T& const_reference;
+    typedef T &reference;
+    typedef const T &const_reference;
     typedef std::size_t size_type;
     typedef std::ptrdiff_t difference_type;
 
+private:
+    Batch<value_type> *last;
+    size_t counter;
+
+public:
     Allocator() {
         counter = size_t(1);
         last = nullptr;
     }
 
     ~Allocator() {
-        Batch<T>* prev;
+        Batch<value_type> *prev;
 
         while (last != nullptr) {
             prev = last->prev;
@@ -77,39 +80,39 @@ public:
         return *this;
     }
 
-    T *allocate(size_t size) {
-        Batch<T> *iter = last;
+    pointer allocate(size_t size) {
+        Batch<value_type> *iter = last;
 
-        while (iter != nullptr && iter->used + size * sizeof(T) > iter->size) {
+        while (iter != nullptr && iter->used + size * sizeof(value_type) > iter->size) {
             iter = iter->prev;
         }
 
         if (iter == nullptr) {
-            Batch<T> *newBatch = new Batch<T>();
+            Batch<value_type> *newBatch = new Batch<value_type>();
             newBatch->prev = last;
             last = newBatch;
             iter = last;
         }
 
-        T *returned = (T *) ((iter->data) + iter->used);
-        iter->used += size * sizeof(T);
+        pointer returned = (pointer) ((iter->data) + iter->used);
+        iter->used += size * sizeof(value_type);
         return returned;
     }
 
-    void deallocate(T *address, size_t size) {
+    void deallocate(pointer address, size_t size) {
         this->~Allocator();
     }
 
-    void construct(T *address, T value) {
-        new(reinterpret_cast<void *>(address)) T(value);
+    void construct(pointer address, value_type value) {
+        new(reinterpret_cast<void *>(address)) value_type(value);
     }
 
     template<class... Args>
-    void construct(T *p, Args &&... args) {
-        ::new(reinterpret_cast<void *>(p)) T(std::forward<Args>(args)...);
+    void construct(pointer p, Args &&... args) {
+        ::new(reinterpret_cast<void *>(p)) value_type(std::forward<Args>(args)...);
     }
 
-    void destroy(T *ptr) {
+    void destroy(pointer ptr) {
         ptr->~T();
     }
 
@@ -117,11 +120,10 @@ public:
         return counter;
     }
 
-    template <typename U>
+    template<typename U>
     struct rebind {
         using other = Allocator<U>;
     };
 };
-
 
 #endif //SIMPLE_EXAMPLE_ALLOCATOR_H
